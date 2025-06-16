@@ -1,117 +1,171 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Cihaz Kontrol Paneli</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cihaz Paneli</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f1f3f6;
+      color: #333;
     }
 
-    .input-group {
-      margin-bottom: 10px;
-    }
-
-    label {
+    header {
+      background: #007bff;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
       font-weight: bold;
     }
 
-    input[type="text"] {
-      width: 300px;
-      padding: 5px;
-      margin-left: 10px;
-      max-width: 300px;
+    .container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
     }
 
-    .cihaz-container {
+    .section {
+      margin-bottom: 30px;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .section h2 {
+      margin-top: 0;
+      font-size: 1.3rem;
+      color: #007bff;
+    }
+
+    .input-group {
       display: flex;
       flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .input-box {
+      flex: 1 1 250px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .input-box label {
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .input-box input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .cihazlar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 15px;
     }
 
     .cihaz-box {
       background: #fff;
-      border: 1px solid #ccc;
+      border-radius: 12px;
       padding: 15px;
-      width: 260px;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+    }
+
+    .cihaz-box:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .cihaz-box input {
-      width: 90%;
-      margin-bottom: 5px;
-    }
-
-    .indicator {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      margin-right: 6px;
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 6px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
     }
 
     .labelled {
       display: flex;
       align-items: center;
-      margin-bottom: 5px;
+      gap: 6px;
+      margin: 4px 0;
     }
 
-    .green {
-      background-color: #28a745;
+    .indicator {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
     }
 
-    .red {
-      background-color: #dc3545;
-    }
+    .green { background-color: #28a745; }
+    .red { background-color: #dc3545; }
 
     button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
+      padding: 12px 24px;
       background: #007bff;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
+      margin-top: 15px;
     }
 
     button:hover {
       background: #0056b3;
     }
+
+    @media (max-width: 768px) {
+      header {
+        font-size: 1.2rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <h2>Proje Bilgileri</h2>
+  <header>Cihaz İzleme Paneli</header>
+  <div class="container">
+    <div class="section">
+      <h2>Proje Bilgileri</h2>
+      <div class="input-group">
+        <div class="input-box">
+          <label for="projeAdi1">Proje Adı 1</label>
+          <input type="text" id="projeAdi1" maxlength="16" />
+        </div>
+        <div class="input-box">
+          <label for="projeAdi2">Proje Adı 2</label>
+          <input type="text" id="projeAdi2" maxlength="16" />
+        </div>
+      </div>
+    </div>
 
-  <div class="input-group">
-    <label>Proje Adı 1:</label>
-    <input type="text" id="projeAdi1" maxlength="16">
-  </div>
-  <div class="input-group">
-    <label>Proje Adı 2:</label>
-    <input type="text" id="projeAdi2" maxlength="16">
-  </div>
+    <div class="section">
+      <h2>Email Adresleri</h2>
+      <div class="input-group">
+        <div class="input-box"><label for="email1">Email 1</label><input type="text" id="email1" /></div>
+        <div class="input-box"><label for="email2">Email 2</label><input type="text" id="email2" /></div>
+        <div class="input-box"><label for="email3">Email 3</label><input type="text" id="email3" /></div>
+      </div>
+    </div>
 
-  <h2>Email Adresleri</h2>
-  <div class="input-group">
-    <label>Email 1:</label>
-    <input type="text" id="email1">
-  </div>
-  <div class="input-group">
-    <label>Email 2:</label>
-    <input type="text" id="email2">
-  </div>
-  <div class="input-group">
-    <label>Email 3:</label>
-    <input type="text" id="email3">
-  </div>
+    <div class="section">
+      <h2>Cihazlar</h2>
+      <div id="cihazlar" class="cihazlar"></div>
+    </div>
 
-  <h2>Cihazlar</h2>
-  <div class="cihaz-container" id="cihazlar"></div>
-
-  <button onclick="veriyiKaydet()">Kaydet</button>
+    <button onclick="veriyiKaydet()">Kaydet</button>
+  </div>
 
   <script src="main.js"></script>
 </body>
