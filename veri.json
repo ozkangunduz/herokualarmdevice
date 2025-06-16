@@ -1,0 +1,207 @@
+{
+  "proje": {
+    "projeAdi1": "16 karakter String",
+    "projeAdi2": "16 karakter String"
+  },
+  "email": {
+    "email1": "ornek1@mail.com",
+    "email2": "ornek2@mail.com",
+    "email3": "ornek3@mail.com"
+  },
+  "anaGiris": {
+    "R": true,
+    "S": false,
+    "T": true
+  },
+  "svc": {
+    "RS": true,
+    "R1": true,
+    "S1": false,
+    "T1": true,
+    "R2": true,
+    "S2": false,
+    "T2": true
+  },
+  "cihazlar": {
+    "0": {
+      "ad": "",
+      "R": true,
+      "S": true,
+      "T": false,
+      "KF": false,
+      "KFD": false,
+      "ERR": true
+    },
+    "1": {
+      "ad": "",
+      "R": true,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "2": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "3": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "4": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "5": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "6": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "7": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "8": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "9": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "10": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "11": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "12": {
+      "ad": "Cihaz_1",
+      "R": true,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "13": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "14": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "15": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "16": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "17": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "18": {
+      "ad": "Cihaz_1",
+      "R": false,
+      "S": true,
+      "T": true,
+      "KF": true,
+      "KFD": false,
+      "ERR": false
+    },
+    "19": {
+      "ad": "Cihaz_19",
+      "R": true,
+      "S": false,
+      "T": true,
+      "KF": false,
+      "KFD": true,
+      "ERR": false
+    }
+  }
+}
