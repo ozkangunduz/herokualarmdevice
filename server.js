@@ -12,5 +12,4 @@ app.use(express.static('public'));
 
 app.listen(3000, '0.0.0.0', () => {
     console.log(`Server 3000 port çalışıyor`);
-     
 });
