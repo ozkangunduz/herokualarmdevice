@@ -51,7 +51,7 @@
     }
 
     .input-box {
-      flex: 1 1 250px;
+      flex: 1 1 50px;
       display: flex;
       flex-direction: column;
     }
@@ -67,13 +67,21 @@
       border-radius: 6px;
       font-size: 14px;
     }
-
+/*
     .cihazlar {
-      display: grid;
+      display: flex;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 15px;
     }
+*/
+.cihazlar {
+  display: flex;
+  flex-direction: column; /* alt alta dizer */
+  gap: 0px; /* satırlar arasında boşluk olmasın */
+  width: 100%;
+}
 
+/*
     .cihaz-box {
       background: #fff;
       border-radius: 12px;
@@ -81,26 +89,64 @@
       box-shadow: 0 1px 6px rgba(0,0,0,0.08);
       transition: all 0.3s ease;
     }
+*/
+.cihaz-box {
+  display: flex;
+  flex-direction: row; /* yatayda label + input dizilimi */
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd;
+  background: #fff;
+  align-items: center;
+  font-family: sans-serif;
+  font-size: 14px;
+}
 
+.anakart {
+  display: flex;
+  flex-direction: row; /* yatayda label + input dizilimi */
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd;
+  background: #fff;
+  align-items: center;
+  font-family: sans-serif;
+  font-size: 14px;
+}
     .cihaz-box:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .cihaz-box input {
-      width: 100%;
+      width: 50%;
       margin-bottom: 8px;
       padding: 6px;
       border: 1px solid #ddd;
       border-radius: 6px;
     }
-
+/*
     .labelled {
       display: flex;
       align-items: center;
       gap: 6px;
       margin: 4px 0;
     }
+*//***************************************************
+.cihaz-box:first-child {
+  font-weight: bold;
+  background-color: #f0f0f0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+*/
+.labelled {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 8px;
+  padding: 4px 8px;
+}
+
+
 
     .indicator {
       width: 14px;
@@ -134,7 +180,7 @@
   </style>
 </head>
 <body>
-  <header>Cihaz İzleme Paneli 1</header>
+  <header>Cihaz İzleme Paneli</header>
   <div class="container">
     <div class="section">
       <h2>Proje Bilgileri</h2>
@@ -149,7 +195,49 @@
         </div>
       </div>
     </div>
+    <div class="section">
+      <h2>Anakart ve SVC</h2>
+      <div id="anakart" class="cihaz-box">
+        <div class="labelled"></div>
+        <div class="labelled" id=""><div id=""><span>R</span></div></div>
+        <div class="labelled" id=""><div id=""><span>S</span></div></div>
+        <div class="labelled" id=""><div id=""><span>T</span></div></div>
+        <div class="labelled"></div>
+        <div class="labelled" id=""><div id=""><span>RS</span></div></div>
+        <div class="labelled" id=""><div id=""><span>S1</span></div></div>
+        <div class="labelled" id=""><div id=""><span>S2</span></div></div>
+        <div class="labelled" id=""><div id=""><span>S3</span></div></div>
+        <div class="labelled"></div>
+        <div class="labelled" id=""><div id=""><span>Tg1</span></div></div>
+        <div class="labelled" id=""><div id=""><span>Tg2</span></div></div>
+        <div class="labelled" id=""><div id=""><span>Tg3</span></div></div>
+        <div class="labelled"></div>
+      </div>
+      <div id="anakart" class="cihaz-box">
+        <div class="labelled"></div>
+        <div class="labelled" id="anakartR"><div id="indicatorR"><span></span></div></div>
+        <div class="labelled" id="anakartS"><div id="indicatorS"><span></span></div></div>
+        <div class="labelled" id="anakartT"><div id="indicatorT"><span></span></div></div>
+        <div class="labelled"></div>
+        <div class="labelled" id="anakartRS"><div id="indicatorRS"><span></span></div></div>
+        <div class="labelled" id="anakartS1"><div id="indicatorS1"><span></span></div></div>
+        <div class="labelled" id="anakartS2"><div id="indicatorS2"><span></span></div></div>
+        <div class="labelled" id="anakartS3"><div id="indicatorS3"><span></span></div></div>
+        <div class="labelled"></div>
+        <div class="labelled" id="anakartTg1"><div id="indicatorTg1"><span></span></div></div>
+        <div class="labelled" id="anakartTg2"><div id="indicatorTg2"><span></span></div></div>
+        <div class="labelled" id="anakartTg3"><div id="indicatorTg3"><span></span></div></div>
+        <div class="labelled"></div>
+      </div>
+      
+    </div>
 
+
+    <div class="section">
+      <h2>Cihazlar</h2>
+      <div id="cihazlar" class="cihazlar"></div>
+      
+    </div>
     <div class="section">
       <h2>Email Adresleri</h2>
       <div class="input-group">
@@ -158,12 +246,6 @@
         <div class="input-box"><label for="email3">Email 3</label><input type="text" id="email3" /></div>
       </div>
     </div>
-
-    <div class="section">
-      <h2>Cihazlar</h2>
-      <div id="cihazlar" class="cihazlar"></div>
-    </div>
-
     <button onclick="veriyiKaydet()">Kaydet</button>
   </div>
 

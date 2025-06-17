@@ -1,27 +1,43 @@
 let veri = {};
 let autoUpdate = true;
-
+let stringsShowed = false;
 function goster(veri) {
   // Proje adları
-  const p1 = document.getElementById("projeAdi1");
-  const p2 = document.getElementById("projeAdi2");
+  if(!stringsShowed){ // Textbox değerlerini sadece 1 kez göster, sürekli güncelleme
+          const p1 = document.getElementById("projeAdi1");
+          const p2 = document.getElementById("projeAdi2");
 
-  if (!p1.matches(':focus')) p1.value = veri.proje.projeAdi1;
-  if (!p2.matches(':focus')) p2.value = veri.proje.projeAdi2;
+          if (!p1.matches(':focus')) p1.value = veri.proje.projeAdi1;
+          if (!p2.matches(':focus')) p2.value = veri.proje.projeAdi2;
 
-  const e1 = document.getElementById("email1");
-  const e2 = document.getElementById("email2");
-  const e3 = document.getElementById("email3");
+          const e1 = document.getElementById("email1");
+          const e2 = document.getElementById("email2");
+          const e3 = document.getElementById("email3");
 
-  if (!e1.matches(':focus')) e1.value = veri.email.email1;
-  if (!e2.matches(':focus')) e2.value = veri.email.email2;
-  if (!e3.matches(':focus')) e3.value = veri.email.email3;
-
+          if (!e1.matches(':focus')) e1.value = veri.email.email1;
+          if (!e2.matches(':focus')) e2.value = veri.email.email2;
+          if (!e3.matches(':focus')) e3.value = veri.email.email3;
+  }
   const cihazlarDiv = document.getElementById("cihazlar");
   cihazlarDiv.innerHTML = "";
 
+  // Anakart verilerini burada girelim
+  document.getElementById("indicatorR").className = "indicator " + (veri.anaGiris.R ? "green" : "red");
+  document.getElementById("indicatorS").className = "indicator " + (veri.anaGiris.S ? "green" : "red");
+  document.getElementById("indicatorT").className = "indicator " + (veri.anaGiris.T ? "green" : "red");
+
+  document.getElementById("indicatorRS").className = "indicator " + (veri.svc.RS ? "green" : "red");
+  document.getElementById("indicatorS1").className = "indicator " + (veri.svc.S1 ? "green" : "red");
+  document.getElementById("indicatorS2").className = "indicator " + (veri.svc.S2 ? "green" : "red");
+  document.getElementById("indicatorS3").className = "indicator " + (veri.svc.S3 ? "green" : "red");
+  
+  document.getElementById("indicatorTg1").className = "indicator " + (veri.svc.Tg1 ? "green" : "red");
+  document.getElementById("indicatorTg2").className = "indicator " + (veri.svc.Tg2 ? "green" : "red");
+  document.getElementById("indicatorTg3").className = "indicator " + (veri.svc.Tg3 ? "green" : "red");
+
+  /////////////////////////////////////////////////////////
+
   Object.entries(veri.cihazlar).forEach(([index, cihaz]) => {
-    if (!cihaz.ad || cihaz.ad.trim() === "") return;  // Boş adlı cihazları gösterme
 
     const box = document.createElement("div");
     box.className = "cihaz-box";
@@ -34,29 +50,36 @@ function goster(veri) {
 
     input.addEventListener("focus", () => autoUpdate = false);
     input.addEventListener("blur", () => {
-      autoUpdate = true;
+      
       veriYukle();
+      autoUpdate = true;
     });
 
+    const deviceNo = document.createElement("div");
+    deviceNo.innerHTML = String(parseInt(index) + 1) + ". Cihaz: ";
+    box.appendChild(deviceNo);
     box.appendChild(input);
 
-    ["R", "S", "T", "KF", "KFD", "ERR"].forEach(key => {
+    ["R", "S", "T", "KF", "KFD", "ARIZA"].forEach(key => {
       const labelDiv = document.createElement("div");
       labelDiv.className = "labelled";
 
       const ind = document.createElement("div");
       ind.className = "indicator " + (cihaz[key] ? "green" : "red");
+      
+
       labelDiv.appendChild(ind);
 
       const lbl = document.createElement("span");
       lbl.textContent = key;
       labelDiv.appendChild(lbl);
-
-      box.appendChild(labelDiv);
+      if(cihaz.ad){box.appendChild(labelDiv);}
+      
     });
-
     cihazlarDiv.appendChild(box);
+
   });
+  stringsShowed = true;
 }
 
 async function veriYukle() {
@@ -72,6 +95,7 @@ async function veriYukle() {
 }
 
 async function veriyiKaydet() {
+
   veri.proje.projeAdi1 = document.getElementById("projeAdi1").value;
   veri.proje.projeAdi2 = document.getElementById("projeAdi2").value;
   veri.email.email1 = document.getElementById("email1").value;
@@ -92,11 +116,26 @@ async function veriyiKaydet() {
   });
 
   if (res.ok) {
-    alert("Veri kaydedildi.");
+ 
   } else {
     alert("Hata oluştu.");
   }
 }
+
+// inputların herhangi birinden ENTER tuşu gelirse kaydetsin!
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter' && event.target.tagName.toLowerCase() === 'input') {
+    event.preventDefault();
+    veriyiKaydet();
+    location.reload();
+  }
+});
+
+
+
+
+
 
 veriYukle();
 setInterval(veriYukle, 1000);
