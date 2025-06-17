@@ -56,7 +56,7 @@ function goster(veri) {
     });
 
     const deviceNo = document.createElement("div");
-    deviceNo.innerHTML = String(parseInt(index) + 1) + ". Cihaz: ";
+    deviceNo.innerHTML = String(parseInt(index) + 1) + ". Kademe : ";
     box.appendChild(deviceNo);
     box.appendChild(input);
 
