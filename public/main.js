@@ -60,7 +60,7 @@ function goster(veri) {
     box.appendChild(deviceNo);
     box.appendChild(input);
 
-    ["R", "S", "T", "KF", "KFD", "ARIZA"].forEach(key => {
+    ["RG","R", "S", "T", "KF", "KFD", "ARIZA"].forEach(key => {
       const labelDiv = document.createElement("div");
       labelDiv.className = "labelled";
 
