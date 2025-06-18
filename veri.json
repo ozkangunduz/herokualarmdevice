@@ -1,12 +1,15 @@
 {
+  "son": {
+    "giris": ""
+  },
   "proje": {
-    "projeAdi1": "MANİSA ",
+    "projeAdi1": "MANİSA",
     "projeAdi2": "MİLLİ EĞİTİM"
   },
   "email": {
-    "email1": "ozkangunduz@gmail.com",
-    "email2": "haluk.yolcu@hotmail.com",
-    "email3": ""
+    "email1": "1234567980123456789012345679801234567980",
+    "email2": "1234567980123456789012345679801234567980",
+    "email3": "12345679801234567890123456798012345679df"
   },
   "anaGiris": {
     "R": false,
@@ -34,7 +37,7 @@
       "ERR": false
     },
     "1": {
-      "ad": "",
+      "ad": "23",
       "RG": false,
       "R": false,
       "S": false,

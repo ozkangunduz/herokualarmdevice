@@ -1,7 +1,9 @@
 let veri = {};
 let autoUpdate = true;
 let stringsShowed = false;
+
 function goster(veri) {
+
   // Proje adları
   if(!stringsShowed){ // Textbox değerlerini sadece 1 kez göster, sürekli güncelleme
           const p1 = document.getElementById("projeAdi1");
@@ -44,7 +46,7 @@ function goster(veri) {
 
     const input = document.createElement("input");
     input.type = "text";
-    input.maxLength = 16;
+    input.maxLength = 30;
     input.dataset.index = index;
     input.value = cihaz.ad;
 
@@ -96,6 +98,7 @@ async function veriYukle() {
 
 async function veriyiKaydet() {
 
+
   veri.proje.projeAdi1 = document.getElementById("projeAdi1").value;
   veri.proje.projeAdi2 = document.getElementById("projeAdi2").value;
   veri.email.email1 = document.getElementById("email1").value;
@@ -136,6 +139,6 @@ document.addEventListener('keydown', (event) => {
 
 
 
-
+// bu yorum gereksizdir.
 veriYukle();
 setInterval(veriYukle, 1000);

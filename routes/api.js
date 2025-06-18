@@ -7,9 +7,29 @@ const VERI_YOLU = path.join(__dirname, '..', 'veri.json');
 
 // POST: veri.json dosyasını güncelle
 router.post('/veri', (req, res) => {
-  fs.writeFile(VERI_YOLU, JSON.stringify(req.body, null, 2), err => {
-    if (err) return res.status(500).json({ success: false, error: err.message });
-    res.json({ success: true });
+  // Önce mevcut JSON dosyasını oku
+  fs.readFile(VERI_YOLU, 'utf8', (err, data) => {
+    if (err && err.code !== 'ENOENT') {
+      return res.status(500).json({ success: false, error: 'Okuma hatası: ' + err.message });
+    }
+
+    let mevcutVeri = {};
+    if (data) {
+      try {
+        mevcutVeri = JSON.parse(data);
+      } catch (e) {
+        return res.status(500).json({ success: false, error: 'JSON parse hatası: ' + e.message });
+      }
+    }
+
+    // Yeni gelen veriyle birleştir
+    const guncellenmisVeri = { ...mevcutVeri, ...req.body };
+
+    // Dosyaya yaz
+    fs.writeFile(VERI_YOLU, JSON.stringify(guncellenmisVeri, null, 2), err => {
+      if (err) return res.status(500).json({ success: false, error: 'Yazma hatası: ' + err.message });
+      res.json({ success: true });
+    });
   });
 });
 
