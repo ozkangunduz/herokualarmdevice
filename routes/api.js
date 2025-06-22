@@ -40,6 +40,11 @@ router.post('/veri', (req, res) => {
         return res.status(500).json({ success: false, error: 'JSON parse hatası: ' + e.message });
       }
     }
+    //bu kısmı deepseek ekledi..................
+    req.body.son = req.body.son || {};
+    req.body.son.giris = new Date().toISOString(); // ISO formatında şu anın zamanı
+    //////////////////////////////////////////
+
 
     const guncellenmisVeri = derinBirlesim(mevcutVeri, req.body);
 
@@ -51,9 +56,28 @@ router.post('/veri', (req, res) => {
 });
 
 
+router.post('/bildirim', async (req, res) => {
+  try {
+    const mailSonuc = await req.app.locals.mailGonder({
+      to: req.body.to || 'ozkangunduz@gmail.com',  // İsteğe bağlı: req.body'den alabilir
+      subject: req.body.subject || 'ARIIZA ADI BU',
+      text: req.body.text || 'Bu bir test bildirimidir',
+      html: req.body.html || '<b>HTML içerik</b>'
+    });
 
-
-
+    res.json({ 
+      success: mailSonuc.success,
+      message: 'Bildirim gönderildi',
+      messageId: mailSonuc.info?.messageId
+    });
+  } catch (error) {
+    console.error('E-posta hatası:', error);
+    res.status(500).json({ 
+      error: 'Bildirim gönderilemedi',
+      details: error.message 
+    });
+  }
+});
 
 
 

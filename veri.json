@@ -1,15 +1,15 @@
 {
   "son": {
-    "giris": ""
+    "giris": "2025-06-22T21:00:20.499Z"
   },
   "proje": {
-    "projeAdi1": "MANİSA",
-    "projeAdi2": "MİLLİ EĞİTİM"
+    "projeAdi1": "aa",
+    "projeAdi2": ""
   },
   "email": {
-    "email1": "1234567980123456789012345679801234567980",
-    "email2": "1234567980123456789012345679801234567980",
-    "email3": "12345679801234567890123456798012345679df"
+    "email1": "ozkangunduz@gmail.com",
+    "email2": "klklkl",
+    "email3": ""
   },
   "anaGiris": {
     "R": false,
@@ -27,7 +27,7 @@
   },
   "cihazlar": {
     "0": {
-      "ad": "21",
+      "ad": "",
       "RG": false,
       "R": false,
       "S": false,
@@ -37,7 +37,7 @@
       "ERR": false
     },
     "1": {
-      "ad": "23",
+      "ad": "",
       "RG": false,
       "R": false,
       "S": false,

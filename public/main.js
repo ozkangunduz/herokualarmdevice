@@ -1,7 +1,7 @@
 let veri = {};
 let autoUpdate = true;
 let stringsShowed = false;
-
+let sonGiris;
 function goster(veri) {
 
   // Proje adları
@@ -37,7 +37,16 @@ function goster(veri) {
   document.getElementById("indicatorTg2").className = "indicator " + (veri.svc.Tg2 ? "green" : "red");
   document.getElementById("indicatorTg3").className = "indicator " + (veri.svc.Tg3 ? "green" : "red");
 
-  /////////////////////////////////////////////////////////
+  sonGiris = new Date(veri.son.giris).getTime();
+  if(Math.floor((Date.now()/1000 - sonGiris/1000)/60)>=5){  // X dakikadır veri alınamıyorsa 
+    document.querySelector("header").style.backgroundColor = "red";
+    document.getElementsByTagName("header")[0].innerHTML = "Cihazdan " + Math.floor((Date.now()/1000 - sonGiris/1000)/60) + " dakikadır yanıt alınamıyor.";
+  }else{
+    document.querySelector("header").style.backgroundColor = "#007bff";
+    document.getElementsByTagName("header")[0].innerHTML = "ALARM CİHAZI";
+    
+  }
+
 
   Object.entries(veri.cihazlar).forEach(([index, cihaz]) => {
 
@@ -134,6 +143,29 @@ document.addEventListener('keydown', (event) => {
     location.reload();
   }
 });
+
+
+/*
+// Bu fonksiyon her veri geldiğinde çağrılmalı
+function veriGeldi() {
+  lastDataTime = Date.now();
+  // Geri normale dönsün istersek:
+  
+}
+
+// 5 saniyede bir kontrol et
+setInterval(() => {
+  const fark = Date.now() - Date(sonGiris);
+  if (fark > 10) { // 1 dakika geçtiyse
+    const header = document.querySelector("header");
+    if (header) {
+      header.style.backgroundColor = "red";
+    }
+  }
+}, 5000);
+*/
+
+
 
 
 
