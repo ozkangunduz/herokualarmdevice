@@ -40,7 +40,7 @@ function goster(veri) {
   sonGiris = new Date(veri.son.giris).getTime();
   if(Math.floor((Date.now()/1000 - sonGiris/1000))>=15){  // 15 saniye veri alınamıyorsa 
     document.querySelector("header").style.backgroundColor = "red";
-    document.getElementsByTagName("header")[0].innerHTML = "Cihazdan " + Math.floor((Date.now()/1000 - sonGiris/1000)/60) + " dakikadır yanıt alınamıyor.";
+    document.getElementsByTagName("header")[0].innerHTML = "Cihazdan " + Math.floor((Date.now()/1000 - sonGiris/1000)/60) + " saniyedir yanıt alınamıyor.";
   }else{
     document.querySelector("header").style.backgroundColor = "#007bff";
     document.getElementsByTagName("header")[0].innerHTML = "ALARM CİHAZI";
