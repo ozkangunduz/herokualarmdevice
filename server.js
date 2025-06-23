@@ -56,7 +56,7 @@ app.use(express.json());
 app.use('/api', apiRoutes);
 app.use(express.static('public'));
 app.use((req, res, next) => {
-  lastActivityTime = Date.now();
+ // lastActivityTime = Date.now(); // son aktivite zamanını Json dosyasından çekme
   next();
 });
 
@@ -66,10 +66,11 @@ function isValidEmail(email) {
 }
 
 setInterval(() => {
-  const inactiveFor = (Date.now() - lastActivityTime) / 1000;
-  const inactiveForMail = (Date.now() - lastMailSentTime) / 1000;
+  let inactiveFor = (Date.now() - lastActivityTime) / 1000;
+  let inactiveForMail = (Date.now() - lastMailSentTime) / 1000;
   // 300 SANİYE = 5 DAKİKADIR VERİ GELMEZSE
   // 1800 SANİYE = YARIM SAATTE BİR MAİL GÖNDER
+  let minutesAway = Math.floor(inactiveFor/60);
   if (inactiveFor > 300 && inactiveForMail>1800) { // 20 saniye geçtiyse, 20 saniyede 1 mail at
     
 
@@ -92,7 +93,7 @@ setInterval(() => {
 //      to: process.env.ADMIN_EMAIL,
 //      to: "ozkan.gunduz@gokbora.com; ozkangunduz@gmail.com",
       to : hedefEmail,
-      subject: '5 DAKİKADIR CİHAZDAN VERİ GELMİYOR!',
+      subject: String(minutesAway) + ' DAKİKADIR CİHAZDAN VERİ GELMİYOR!',
       text: `Son işlem: ${new Date(lastActivityTime).toLocaleString()}`
     });
     lastMailSentTime = Date.now();
