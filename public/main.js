@@ -4,6 +4,9 @@ let stringsShowed = false;
 let sonGiris;
 function goster(veri) {
 
+
+console.log(veri.son.giris);
+
   // Proje adları
   if(!stringsShowed){ // Textbox değerlerini sadece 1 kez göster, sürekli güncelleme
           const p1 = document.getElementById("projeAdi1");
