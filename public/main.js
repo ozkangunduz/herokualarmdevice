@@ -38,7 +38,7 @@ function goster(veri) {
   document.getElementById("indicatorTg3").className = "indicator " + (veri.svc.Tg3 ? "green" : "red");
 
   sonGiris = veri.son.giris;
-  if(sonGiris>=15){  // 15 saniye veri alınamıyorsa 
+  if(sonGiris>=30){  // 15 saniye veri alınamıyorsa 
     document.querySelector("header").style.backgroundColor = "red";
     document.getElementsByTagName("header")[0].innerHTML = "Cihazdan " + Math.floor(sonGiris) + " saniyedir yanıt alınamıyor.";
   }else{
