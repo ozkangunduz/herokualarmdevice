@@ -15,7 +15,7 @@ function goster(veri) {
           const e1 = document.getElementById("email1");
           const e2 = document.getElementById("email2");
           const e3 = document.getElementById("email3");
-
+          console.log(veri.son.giris);
           if (!e1.matches(':focus')) e1.value = veri.email.email1;
           if (!e2.matches(':focus')) e2.value = veri.email.email2;
           if (!e3.matches(':focus')) e3.value = veri.email.email3;
