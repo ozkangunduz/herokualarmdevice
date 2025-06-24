@@ -37,10 +37,10 @@ function goster(veri) {
   document.getElementById("indicatorTg2").className = "indicator " + (veri.svc.Tg2 ? "green" : "red");
   document.getElementById("indicatorTg3").className = "indicator " + (veri.svc.Tg3 ? "green" : "red");
 
-  sonGiris = new Date(veri.son.giris).getTime();
-  if(Math.floor((Date.now()/1000 - sonGiris/1000))>=15){  // 15 saniye veri alınamıyorsa 
+  sonGiris = veri.son.giris;
+  if(sonGiris>=15){  // 15 saniye veri alınamıyorsa 
     document.querySelector("header").style.backgroundColor = "red";
-    document.getElementsByTagName("header")[0].innerHTML = "Cihazdan " + Math.floor((Date.now()/1000 - sonGiris/1000)) + " saniyedir yanıt alınamıyor.";
+    document.getElementsByTagName("header")[0].innerHTML = "Cihazdan " + Math.floor(sonGiris) + " saniyedir yanıt alınamıyor.";
   }else{
     document.querySelector("header").style.backgroundColor = "#007bff";
     document.getElementsByTagName("header")[0].innerHTML = "ALARM CİHAZI";

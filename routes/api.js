@@ -44,7 +44,7 @@ router.post('/veri', (req, res) => {
     //bu kısmı deepseek ekledi..................
     console.log(mevcutVeri);
     req.body.son = req.body.son || {};
-    req.body.son.giris = new Date().toISOString(); // ISO formatında şu anın zamanı
+    req.body.son.giris = 0; // ISO formatında şu anın zamanı
     console.log(req.body);
     //////////////////////////////////////////
 

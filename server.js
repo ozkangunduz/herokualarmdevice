@@ -4,8 +4,7 @@ const fs = require('fs');
 
 const path = require('path');
 const nodemailer = require('nodemailer'); // e-posta modülü ekleniyor
-let lastActivityTime = Date.now();
-let lastMailSentTime = 0;
+
 const app = express();
 const apiRoutes = require('./routes/api');
 
@@ -65,39 +64,54 @@ function isValidEmail(email) {
   return typeof email === 'string' && regex.test(email);
 }
 
+
+let mailSent = false;
+let mailSendingCounter = 0 ; // tekrar mail atmasın ve belirlenen sürede devam ediyorsa mail atsın sayacı 
+let mailSendPeriod = 1440; // kaç dakikada 1 mail atsın, 2 saat => 7200 dk => 5sn * 1440  
+let firstMailSendTime = 300; // ilk mail 5 dakika sonra
+
 setInterval(() => {
-  let inactiveFor = (Date.now() - lastActivityTime) / 1000;
-  let inactiveForMail = (Date.now() - lastMailSentTime) / 1000;
   // 300 SANİYE = 5 DAKİKADIR VERİ GELMEZSE
-  // 1800 SANİYE = YARIM SAATTE BİR MAİL GÖNDER
-  let minutesAway = Math.floor(inactiveFor/60);
-  if (inactiveFor > 300 && inactiveForMail>1800) { // 20 saniye geçtiyse, 20 saniyede 1 mail at
-    
-
-
-    // mail adreslerini JSON Dosyasından çeksin.
+  // mail adreslerini JSON Dosyasından çeksin.
     let veri = JSON.parse(fs.readFileSync(path.join(__dirname, 'veri.json')));
+    veri.son.giris = (veri.son.giris || 0) + 5;
+    let inactiveFor = veri.son.giris;  
 
+    if (inactiveFor > firstMailSendTime) {mailSendingCounter++;}
+    else{mailSendingCounter=0;}
+
+    if(mailSendingCounter>=(mailSendPeriod-firstMailSendTime)){
+        mailSent = false;
+        mailSendingCounter =0;
+    }
+
+    if (inactiveFor > firstMailSendTime && !mailSent) { // 5 dakika geçtiyse
+    
+    
     hedefEmail1 = veri.email?.email1 || 'alarmcihazi1@gmail.com';
     hedefEmail2 = veri.email?.email2 || 'alarmcihazi1@gmail.com';
     hedefEmail3 = veri.email?.email3 || 'alarmcihazi1@gmail.com';
-
+    
     if(!isValidEmail(hedefEmail1)) {hedefEmail1 = "";}
     if(!isValidEmail(hedefEmail2)) {hedefEmail2 = "";}
     if(!isValidEmail(hedefEmail3)) {hedefEmail3 = "";}
 
     hedefEmail = hedefEmail1 + ";" + hedefEmail2 + ";" + hedefEmail3;
 
+
+
     transporter.sendMail({
       from: "ALARM CİHAZI <alarmcihazi1@gmail.com>",
 //      to: process.env.ADMIN_EMAIL,
 //      to: "ozkan.gunduz@gokbora.com; ozkangunduz@gmail.com",
       to : hedefEmail,
-      subject: String(minutesAway) + ' DAKİKADIR CİHAZDAN VERİ GELMİYOR!',
-      text: `Son işlem: ${new Date(lastActivityTime).toLocaleString()}`
-    });
-    lastMailSentTime = Date.now();
+      subject: String(Math.floor(inactiveFor/60)) + ' DAKİKADIR CİHAZDAN VERİ GELMİYOR!',
+      text: `Son işlem: ${inactiveFor} saniye önce gerçekleşti.`
+    }
+  );
+  mailSent = true;
   }
+  fs.writeFileSync(path.join(__dirname, 'veri.json'), JSON.stringify(veri, null, 2));
 }, 5000); // 5 saniyede bir kontrol
 
 
