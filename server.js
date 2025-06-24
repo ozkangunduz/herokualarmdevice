@@ -73,7 +73,19 @@ let firstMailSendTime = 300; // ilk mail 5 dakika sonra
 setInterval(() => {
   // 300 SANİYE = 5 DAKİKADIR VERİ GELMEZSE
   // mail adreslerini JSON Dosyasından çeksin.
-    let veri = JSON.parse(fs.readFileSync(path.join(__dirname, 'veri.json')));
+
+let veri;
+
+try {
+    const dosyaYolu = path.join(__dirname, 'veri.json');
+    const dosyaIcerigi = fs.readFileSync(dosyaYolu, 'utf8');
+    veri = JSON.parse(dosyaIcerigi);
+} catch (error) {
+    console.error('❌ veri.json dosyası okunamadı veya geçersiz JSON:', error.message);
+    veri = {}; // veya null ya da fallback veri
+}
+
+
     veri.son.giris = (veri.son.giris || 0) + 5;
     let inactiveFor = veri.son.giris;  
 
