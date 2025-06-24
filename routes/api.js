@@ -33,6 +33,7 @@ router.post('/veri', (req, res) => {
     }
 
     let mevcutVeri = {};
+    console.log(data);
     if (data) {
       try {
         mevcutVeri = JSON.parse(data);
@@ -41,13 +42,15 @@ router.post('/veri', (req, res) => {
       }
     }
     //bu kısmı deepseek ekledi..................
+    console.log(mevcutVeri);
     req.body.son = req.body.son || {};
     req.body.son.giris = new Date().toISOString(); // ISO formatında şu anın zamanı
+    console.log(req.body);
     //////////////////////////////////////////
 
 
     const guncellenmisVeri = derinBirlesim(mevcutVeri, req.body);
-
+    console.log(guncellenmisVeri);
     fs.writeFile(VERI_YOLU, JSON.stringify(guncellenmisVeri, null, 2), err => {
       if (err) return res.status(500).json({ success: false, error: 'Yazma hatası: ' + err.message });
       res.json({ success: true });
