@@ -5,7 +5,7 @@ let sonGiris;
 function goster(veri) {
 
 
-console.log(veri.son.giris);
+console.log(veri);
 
   // Proje adları
   if(!stringsShowed){ // Textbox değerlerini sadece 1 kez göster, sürekli güncelleme
@@ -44,6 +44,7 @@ console.log(veri.son.giris);
   if(sonGiris>=30){  // 15 saniye veri alınamıyorsa 
     document.querySelector("header").style.backgroundColor = "red";
     document.getElementsByTagName("header")[0].innerHTML = "Cihazdan " + Math.floor(sonGiris) + " saniyedir yanıt alınamıyor.";
+    
   }else{
     document.querySelector("header").style.backgroundColor = "#007bff";
     document.getElementsByTagName("header")[0].innerHTML = "ALARM CİHAZI";
@@ -135,6 +136,7 @@ async function veriyiKaydet() {
   } else {
     alert("Hata oluştu.");
   }
+  location.reload();
 }
 
 // inputların herhangi birinden ENTER tuşu gelirse kaydetsin!
