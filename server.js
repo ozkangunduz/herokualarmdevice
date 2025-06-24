@@ -74,7 +74,7 @@ setInterval(() => {
   // 300 SANİYE = 5 DAKİKADIR VERİ GELMEZSE
   // mail adreslerini JSON Dosyasından çeksin.
 
-let veri;
+let veri ={};
 
 try {
     const dosyaYolu = path.join(__dirname, 'veri.json');
@@ -123,7 +123,27 @@ try {
   );
   mailSent = true;
   }
-  fs.writeFileSync(path.join(__dirname, 'veri.json'), JSON.stringify(veri, null, 2));
+
+
+try {
+    const dosyaYolu = path.join(__dirname, 'veri.json');
+     fs.writeFileSync(dosyaYolu, JSON.stringify(veri, null, 2));
+    
+} catch (error) {
+    console.error('❌ veri.json dosyasına yazılamadı veya geçersiz JSON:', error.message);
+    veri = {}; // veya null ya da fallback veri
+}
+ 
+
+
+
+
+
+
+
+
+
+
 }, 5000); // 5 saniyede bir kontrol
 
 
