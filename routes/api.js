@@ -41,12 +41,7 @@ router.post('/veri', (req, res) => {
         return res.status(500).json({ success: false, error: 'JSON parse hatası: ' + e.message });
       }
     }
-    //bu kısmı deepseek ekledi..................
-    console.log(mevcutVeri);
-    req.body.son = req.body.son || {};
-    req.body.son.giris = 0; // ISO formatında şu anın zamanı
-    console.log(req.body);
-    //////////////////////////////////////////
+
 
 
     const guncellenmisVeri = derinBirlesim(mevcutVeri, req.body);
