@@ -1,177 +1,132 @@
-require('dotenv').config(); // .env desteği ekleniyor
+require('dotenv').config();
 const express = require('express');
-const fs = require('fs');
-
+const fs = require('fs').promises; // ASENKRON dosya işlemleri
 const path = require('path');
-const nodemailer = require('nodemailer'); // e-posta modülü ekleniyor
+const nodemailer = require('nodemailer');
 
 const app = express();
 const apiRoutes = require('./routes/api');
 
+let hedefEmail1 = "", hedefEmail2 = "", hedefEmail3 = "", hedefEmail = "";
 
-let hedefEmail1, hedefEmail2, hedefEmail3, hedefEmail;
-
-
-// E-posta transporter konfigürasyonu
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com', // tırnak içindeydi, 
-  port: process.env.SMTP_PORT || 587,
-  secure: process.env.SMTP_SECURE === 'true',   // tırnak içinde 'true' idi.
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+// Ortam değişkenlerini kontrol et
+['EMAIL_USER', 'EMAIL_PASS', 'EMAIL_FROM'].forEach((key) => {
+  if (!process.env[key]) {
+    console.warn(`⚠️ Ortam değişkeni eksik: ${key}`);
   }
 });
 
-// E-posta gönderme fonksiyonu (app.locals'a ekleniyor)
+// E-posta transporter'ı
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST || 'smtp.gmail.com',
+  port: process.env.SMTP_PORT || 587,
+  secure: process.env.SMTP_SECURE === 'true',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  }
+});
+
+// Mail gönderme fonksiyonu
 app.locals.mailGonder = async (mailOptions) => {
   try {
-
-
-    //Json verisini buradan çek.
-
-
-
-
     const info = await transporter.sendMail({
-      from: process.env.EMAIL_FROM, //|| '"ALARM CİHAZI"',
+      from: process.env.EMAIL_FROM,
       ...mailOptions
     });
-
-
-    console.log('E-posta gönderildi:', info.messageId);
+    console.log('📧 E-posta gönderildi:', info.messageId);
     return { success: true, info };
   } catch (error) {
-    console.error('E-posta gönderme hatası:', error);
+    console.error('🚨 E-posta gönderme hatası:', error.message);
     return { success: false, error };
   }
 };
 
-
-
-
-
+// JSON desteği ve route'lar
 app.use(express.json());
 app.use('/api', apiRoutes);
 app.use(express.static('public'));
-app.use((req, res, next) => {
- // lastActivityTime = Date.now(); // son aktivite zamanını Json dosyasından çekme
-  next();
-});
 
+// Email doğrulama
 function isValidEmail(email) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return typeof email === 'string' && regex.test(email);
 }
 
-
+// Mail gönderme kontrol değişkenleri
 let mailSent = false;
-let mailSendingCounter = 0 ; // tekrar mail atmasın ve belirlenen sürede devam ediyorsa mail atsın sayacı 
-let mailSendPeriod = 1440; // kaç dakikada 1 mail atsın, 2 saat => 7200 dk => 5sn * 1440  
-let firstMailSendTime = 300; // ilk mail 5 dakika sonra
+let mailSendingCounter = 0;
+const mailSendPeriod = 1440;       // 2 saat
+const firstMailSendTime = 300;     // 5 dakika
 
-setInterval(() => {
-  // 300 SANİYE = 5 DAKİKADIR VERİ GELMEZSE
-  // mail adreslerini JSON Dosyasından çeksin.
-
-let veri ={};
-
-try {
+// Asenkron interval fonksiyonu
+setInterval(async () => {
+  try {
     const dosyaYolu = path.join(__dirname, 'veri.json');
-    const dosyaIcerigi = fs.readFileSync(dosyaYolu, 'utf8');
-    veri = JSON.parse(dosyaIcerigi);
-} catch (error) {
-    console.error('❌ veri.json dosyası okunamadı veya geçersiz JSON:', error.message);
-    veri = {}; // veya null ya da fallback veri
-}
-
+    const dosyaIcerigi = await fs.readFile(dosyaYolu, 'utf8');
+    const veri = JSON.parse(dosyaIcerigi);
 
     veri.son.giris = (veri.son.giris || 0) + 5;
-    let inactiveFor = veri.son.giris;  
+    const inactiveFor = veri.son.giris;
 
-    if (inactiveFor > firstMailSendTime) {mailSendingCounter++;}
-    else{mailSendingCounter=0;}
-
-    if(mailSendingCounter>=(mailSendPeriod-firstMailSendTime)){
-        mailSent = false;
-        mailSendingCounter =0;
+    if (inactiveFor > firstMailSendTime) {
+      mailSendingCounter++;
+    } else {
+      mailSendingCounter = 0;
     }
 
-    if (inactiveFor > firstMailSendTime && !mailSent) { // 5 dakika geçtiyse
-    
-    
-    hedefEmail1 = veri.email?.email1 || 'alarmcihazi1@gmail.com';
-    hedefEmail2 = veri.email?.email2 || 'alarmcihazi1@gmail.com';
-    hedefEmail3 = veri.email?.email3 || 'alarmcihazi1@gmail.com';
-    
-    if(!isValidEmail(hedefEmail1)) {hedefEmail1 = "";}
-    if(!isValidEmail(hedefEmail2)) {hedefEmail2 = "";}
-    if(!isValidEmail(hedefEmail3)) {hedefEmail3 = "";}
-
-    hedefEmail = hedefEmail1 + ";" + hedefEmail2 + ";" + hedefEmail3;
-
-
-
-    transporter.sendMail({
-      from: "ALARM CİHAZI <alarmcihazi1@gmail.com>",
-//      to: process.env.ADMIN_EMAIL,
-//      to: "ozkan.gunduz@gokbora.com; ozkangunduz@gmail.com",
-      to : hedefEmail,
-      subject: String(Math.floor(inactiveFor/60)) + ' DAKİKADIR CİHAZDAN VERİ GELMİYOR!',
-      text: `Son işlem: ${inactiveFor} saniye önce gerçekleşti.`
+    if (mailSendingCounter >= (mailSendPeriod - firstMailSendTime)) {
+      mailSent = false;
+      mailSendingCounter = 0;
     }
-  );
-  mailSent = true;
+
+    if (inactiveFor > firstMailSendTime && !mailSent) {
+      hedefEmail1 = isValidEmail(veri.email?.email1) ? veri.email.email1 : "";
+      hedefEmail2 = isValidEmail(veri.email?.email2) ? veri.email.email2 : "";
+      hedefEmail3 = isValidEmail(veri.email?.email3) ? veri.email.email3 : "";
+
+      hedefEmail = [hedefEmail1, hedefEmail2, hedefEmail3]
+        .filter(Boolean)
+        .join(";");
+
+      if (hedefEmail) {
+        try {
+          await transporter.sendMail({
+            from: "ALARM CİHAZI <alarmcihazi1@gmail.com>",
+            to: hedefEmail,
+            subject: `${Math.floor(inactiveFor / 60)} DAKİKADIR CİHAZDAN VERİ GELMİYOR!`,
+            text: `Son işlem: ${inactiveFor} saniye önce gerçekleşti.`
+          });
+          console.log('📨 Alarm e-postası gönderildi:', hedefEmail);
+          mailSent = true;
+        } catch (emailErr) {
+          console.error('🚨 Alarm e-postası gönderilemedi:', emailErr.message);
+        }
+      }
+    }
+
+    await fs.writeFile(dosyaYolu, JSON.stringify(veri, null, 2));
+  } catch (error) {
+    console.error('📂 veri.json işlem hatası:', error.message);
   }
+}, 5000);
 
-
-try {
-    const dosyaYolu = path.join(__dirname, 'veri.json');
-     fs.writeFileSync(dosyaYolu, JSON.stringify(veri, null, 2));
-    
-} catch (error) {
-    console.error('❌ veri.json dosyasına yazılamadı veya geçersiz JSON:', error.message);
-    veri = {}; // veya null ya da fallback veri
-}
- 
-
-
-
-
-
-
-
-
-
-
-}, 5000); // 5 saniyede bir kontrol
-
-
-    if(!isValidEmail(hedefEmail1)) {hedefEmail1 = "";}
-
-
-
-
-
-// Hata yönetimi middleware'i
-app.use((err, req, res, next) => {
-  console.error('Sunucu hatası:', err);
-
-  // Hataları yöneticiye e-posta ile bildir
+// Hata yönetimi
+app.use(async (err, req, res, next) => {
+  console.error('❗Sunucu hatası:', err);
   if (process.env.NODE_ENV === 'production') {
-    app.locals.mailGonder({
+    await app.locals.mailGonder({
       to: process.env.ADMIN_EMAIL,
       subject: 'Sunucu Hatası Bildirimi',
       text: `Hata oluştu: ${err.stack || err.message}`,
       html: `<h1>Sunucu Hatası</h1><pre>${err.stack || err.message}</pre>`
     });
   }
-
   res.status(500).json({ error: 'Sunucu hatası oluştu' });
 });
 
-
+// Sunucu başlatma
 app.listen(3000, '0.0.0.0', () => {
-    console.log(`Server 3000 port çalışıyor`);
-    console.log('E-posta servisi:', transporter.options.host);
+  console.log(`🚀 Server 3000 portunda çalışıyor`);
+  console.log('📧 E-posta servisi:', transporter.options.host);
 });
