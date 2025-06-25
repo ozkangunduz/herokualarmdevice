@@ -5,6 +5,7 @@ let sonGiris;
 function goster(veri) {
 
 
+
 console.log(veri);
 
   // Proje adları
