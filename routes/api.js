@@ -1,5 +1,5 @@
 const express = require('express');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const router = express.Router();
 
@@ -33,7 +33,7 @@ router.post('/veri', (req, res) => {
     }
 
     let mevcutVeri = {};
-    console.log(data);
+    //console.log(data);
     if (data) {
       try {
         mevcutVeri = JSON.parse(data);
@@ -45,7 +45,7 @@ router.post('/veri', (req, res) => {
 
 
     const guncellenmisVeri = derinBirlesim(mevcutVeri, req.body);
-    console.log(guncellenmisVeri);
+    //console.log(guncellenmisVeri);
     fs.writeFile(VERI_YOLU, JSON.stringify(guncellenmisVeri, null, 2), err => {
       if (err) return res.status(500).json({ success: false, error: 'Yazma hatası: ' + err.message });
       res.json({ success: true });
@@ -69,7 +69,7 @@ router.post('/bildirim', async (req, res) => {
       messageId: mailSonuc.info?.messageId
     });
   } catch (error) {
-    console.error('E-posta hatası:', error);
+   // console.error('E-posta hatası:', error);
     res.status(500).json({ 
       error: 'Bildirim gönderilemedi',
       details: error.message 
