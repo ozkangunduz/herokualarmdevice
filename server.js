@@ -67,7 +67,7 @@ function isValidEmail(email) {
 
 let mailSent = false;
 let mailSendingCounter = 0 ; // tekrar mail atmasın ve belirlenen sürede devam ediyorsa mail atsın sayacı 
-let mailSendPeriod = 1440; // kaç dakikada 1 mail atsın, 2 saat => 7200 dk => 5sn * 1440  
+let mailSendPeriod = 720; // kaç dakikada 1 mail atsın, 2 saat => 7200 dk => 10sn * 720  
 let firstMailSendTime = 300; // ilk mail 5 dakika sonra
 
 setInterval(() => {
@@ -86,7 +86,7 @@ try {
 }
 
 
-    veri.son.giris = (veri.son.giris || 0) + 5;
+    veri.son.giris = (veri.son.giris || 0) + 10;
     let inactiveFor = veri.son.giris;  
 
     if (inactiveFor > firstMailSendTime) {mailSendingCounter++;}
@@ -144,7 +144,7 @@ try {
 
 
 
-}, 5000); // 5 saniyede bir kontrol
+}, 10000); // 5 saniyede bir kontrol
 
 
     if(!isValidEmail(hedefEmail1)) {hedefEmail1 = "";}
