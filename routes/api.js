@@ -5,6 +5,7 @@ const router = express.Router();
 
 const VERI_YOLU = path.join(__dirname, '..', 'veri.json');
 
+// Derin birleştirme fonksiyonu
 function derinBirlesim(hedef, kaynak) {
   for (const key in kaynak) {
     if (
@@ -21,43 +22,36 @@ function derinBirlesim(hedef, kaynak) {
   return hedef;
 }
 
-
-
-
-
-// POST: veri.json dosyasını güncelle
-router.post('/veri', (req, res) => {
-  fs.readFile(VERI_YOLU, 'utf8', (err, data) => {
-    if (err && err.code !== 'ENOENT') {
-      return res.status(500).json({ success: false, error: 'Okuma hatası: ' + err.message });
-    }
-
+// ✅ POST: veri.json dosyasını güncelle
+router.post('/veri', async (req, res) => {
+  try {
     let mevcutVeri = {};
-    //console.log(data);
-    if (data) {
-      try {
-        mevcutVeri = JSON.parse(data);
-      } catch (e) {
-        return res.status(500).json({ success: false, error: 'JSON parse hatası: ' + e.message });
+
+    try {
+      const data = await fs.readFile(VERI_YOLU, 'utf8');
+      mevcutVeri = JSON.parse(data);
+    } catch (err) {
+      if (err.code !== 'ENOENT') {
+        return res.status(500).json({ success: false, error: 'Okuma hatası: ' + err.message });
       }
+      // Dosya bulunamadıysa: mevcutVeri boş kalacak
     }
-
-
 
     const guncellenmisVeri = derinBirlesim(mevcutVeri, req.body);
-    //console.log(guncellenmisVeri);
-    fs.writeFile(VERI_YOLU, JSON.stringify(guncellenmisVeri, null, 2), err => {
-      if (err) return res.status(500).json({ success: false, error: 'Yazma hatası: ' + err.message });
-      res.json({ success: true });
-    });
-  });
+
+    await fs.writeFile(VERI_YOLU, JSON.stringify(guncellenmisVeri, null, 2));
+    res.json({ success: true });
+
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Yazma hatası: ' + err.message });
+  }
 });
 
-
+// ✅ POST: Mail gönder
 router.post('/bildirim', async (req, res) => {
   try {
     const mailSonuc = await req.app.locals.mailGonder({
-      to: req.body.to || 'ozkangunduz@gmail.com',  // İsteğe bağlı: req.body'den alabilir
+      to: req.body.to || 'ozkangunduz@gmail.com',
       subject: req.body.subject || 'ARIIZA ADI BU',
       text: req.body.text || 'Bu bir test bildirimidir',
       html: req.body.html || '<b>HTML içerik</b>'
@@ -69,7 +63,6 @@ router.post('/bildirim', async (req, res) => {
       messageId: mailSonuc.info?.messageId
     });
   } catch (error) {
-   // console.error('E-posta hatası:', error);
     res.status(500).json({ 
       error: 'Bildirim gönderilemedi',
       details: error.message 
@@ -77,20 +70,16 @@ router.post('/bildirim', async (req, res) => {
   }
 });
 
-
-
-
-// GET: veri.json içeriğini oku
-router.get('/veriler/son', (req, res) => {
-  fs.readFile(VERI_YOLU, 'utf8', (err, data) => {
-    if (err) return res.status(500).json({ success: false, error: err.message });
-    try {
-      const json = JSON.parse(data);
-      res.json(json);
-    } catch (e) {
-      res.status(500).json({ success: false, error: "JSON parse hatası" });
-    }
-  });
+// ✅ GET: veri.json içeriğini oku
+router.get('/veriler/son', async (req, res) => {
+  try {
+    const data = await fs.readFile(VERI_YOLU, 'utf8');
+    const json = JSON.parse(data);
+    res.json(json);
+  } catch (err) {
+    const mesaj = err.code === 'ENOENT' ? 'Dosya bulunamadı' : 'JSON parse hatası';
+    res.status(500).json({ success: false, error: mesaj });
+  }
 });
 
 module.exports = router;

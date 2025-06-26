@@ -6,7 +6,7 @@ function goster(veri) {
 
 
 
-console.log(veri);
+//console.log(veri);
 
   // Proje adları
   if(!stringsShowed){ // Textbox değerlerini sadece 1 kez göster, sürekli güncelleme
