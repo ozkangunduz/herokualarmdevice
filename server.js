@@ -171,7 +171,7 @@ app.use((err, req, res, next) => {
 });
 
 
-app.listen(3000, '0.0.0.0', () => {
+app.listen(process.env.PORT || 3000, '0.0.0.0', () => {
     console.log(`Server 3000 port çalışıyor`);
     console.log('E-posta servisi:', transporter.options.host);
 });
